@@ -15,7 +15,6 @@ import {
   Share,
   InfoIcon,
   CheckCircle,
-  Check,
 } from "lucide-react";
 import Image from "next/image";
 import { ToastContainer, toast, Bounce } from "react-toastify";
@@ -153,7 +152,7 @@ function Page() {
     try {
       // Send a PUT request to the server to toggle the favorite status
       const response = await fetch(
-        "http://localhost:3000/api/updateFavoriteStatus",
+        "/api/updateFavoriteStatus",
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -192,7 +191,7 @@ function Page() {
 
     try {
       info("Saving Article!");
-      const response = await fetch("http://localhost:3000/api/updateArticle", {
+      const response = await fetch("/api/updateArticle", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
