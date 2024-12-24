@@ -13,6 +13,16 @@ export async function PUT(req) {
                 { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }
+        // MongoDB connection
+        if (mongoose.connection.readyState !== 1) {
+            console.log("MongoDB not connected, connecting...");
+            await mongoose.connect(process.env.MONGODB_URI,
+                //   {
+                //   useUnifiedTopology: true,
+                // }
+            );
+            console.log("MongoDB connected.");
+        }
 
         const user = await User.findOne({
             email: email,
@@ -24,11 +34,11 @@ export async function PUT(req) {
         }
 
         const updateResult = await User.updateOne(
-            { 
-                email: email, 
-                "articles._id": articleId 
+            {
+                email: email,
+                "articles._id": articleId
             },
-            { 
+            {
                 $set: { "articles.$.content": content }
             }
         );

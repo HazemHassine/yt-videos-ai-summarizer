@@ -17,6 +17,16 @@ export async function GET(req) {
 
     const decoded = verify(token.value, process.env.JWT_SECRET);
     console.log("decoded:", decoded);
+    // MongoDB connection
+    if (mongoose.connection.readyState !== 1) {
+      console.log("MongoDB not connected, connecting...");
+      await mongoose.connect(process.env.MONGODB_URI,
+        //   {
+        //   useUnifiedTopology: true,
+        // }
+      );
+      console.log("MongoDB connected.");
+    }
     const user = await User.findOne({ email: decoded.email });
 
     if (!user) {

@@ -15,6 +15,16 @@ export async function DELETE(req) {
         }
 
         console.log(`Request received with email: ${email} and articleId: ${articleId}`);
+        // MongoDB connection
+        if (mongoose.connection.readyState !== 1) {
+            console.log("MongoDB not connected, connecting...");
+            await mongoose.connect(process.env.MONGODB_URI,
+                //   {
+                //   useUnifiedTopology: true,
+                // }
+            );
+            console.log("MongoDB connected.");
+        }
 
         const user = await User.findOne({ email });
         if (!user) {
@@ -35,7 +45,7 @@ export async function DELETE(req) {
                 }
             }
         );
-        
+
         if (updateResult.modifiedCount === 0) {
             console.warn(`No article found with _id: ${articleId} for user: ${email}`);
             return new Response(
@@ -45,7 +55,7 @@ export async function DELETE(req) {
         }
 
         console.log(`Article with _id: ${articleId} deleted successfully for user: ${email}`);
-        
+
         return new Response(
             JSON.stringify({ message: "Article deleted successfully" }),
             { status: 200 }

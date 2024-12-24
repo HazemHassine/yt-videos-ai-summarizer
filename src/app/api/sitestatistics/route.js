@@ -3,9 +3,16 @@ import User from "../../models/User";
 
 export async function GET(req) {
     try {
-        console.log("Connecting to MongoDB...");
-        await mongoose.connect(process.env.MONGODB_URI);
-        console.log("Connected to MongoDB");
+        // MongoDB connection
+        if (mongoose.connection.readyState !== 1) {
+            console.log("MongoDB not connected, connecting...");
+            await mongoose.connect(process.env.MONGODB_URI,
+                //   {
+                //   useUnifiedTopology: true,
+                // }
+            );
+            console.log("MongoDB connected.");
+        }
 
         const userCount = await User.countDocuments();
         console.log("User count retrieved:", userCount);
