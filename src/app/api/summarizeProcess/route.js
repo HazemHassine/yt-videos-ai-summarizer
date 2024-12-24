@@ -132,10 +132,6 @@ import { DOMParser } from 'xmldom';
 import User from "../../models/User";
 import mongoose from 'mongoose';
 
-function concatenateText(data) {
-    return data.map(item => item.text).join(' ');
-}
-
 export async function POST(req) {
     try {
         console.clear();
@@ -152,6 +148,8 @@ export async function POST(req) {
         }
 
         let youtubeText = await youtubeResponse.text();
+        console.log("Fetched YouTube Page Text:", youtubeText); // Log the full page
+
         youtubeText = youtubeText.replace(/\\u0026/g, '&'); // Clean any escaped characters
 
         // Step 2: Extract all `timedtext` URLs from the YouTube page
@@ -200,7 +198,7 @@ export async function POST(req) {
 
         // Forward the request to /api/transcriptToArticle with cookies
         console.log("Forwarding request to localhost:3000/api/transcriptToArticle...");
-        const response = await fetch(`${process.env.NODE_ENV === 'development' ? "http://localhost:3000": process.env.BASE_PRODUCTION_URL}/api/transcriptToArticle`, {
+        const response = await fetch(`${process.env.NODE_ENV === 'development' ? "http://localhost:3000" : process.env.BASE_PRODUCTION_URL}/api/transcriptToArticle`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
