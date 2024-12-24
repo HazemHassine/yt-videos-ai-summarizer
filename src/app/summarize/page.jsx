@@ -103,7 +103,7 @@ function Page() {
       setStatus("Summarizing...");
       setIsLoading(true);
       const response = await fetch(
-        "http://localhost:3000/api/summarizeProcess",
+        "/api/summarizeProcess",
         {
           method: "POST",
           headers: {
@@ -214,7 +214,7 @@ function Page() {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/deleteArticle", {
+      const response = await fetch("/api/deleteArticle", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ articleId: uuid, email: user.email }),
@@ -258,7 +258,7 @@ function Page() {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/api/updateFavoriteStatus",
+        "/api/updateFavoriteStatus",
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

@@ -106,13 +106,14 @@ function Page() {
       icon: <InfoIcon className="text-black" />,
     });
   };
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const handleDelete = async (articleId) => {
     setExpandedArticle(null);
     if (!user) return;
 
     try {
       info("Deleting Article!");
-      const response = await fetch("http://localhost:3000/api/deleteArticle", {
+      const response = await fetch(`/api/deleteArticle`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ articleId, email: user.email }),

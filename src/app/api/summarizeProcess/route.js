@@ -24,7 +24,7 @@ export async function POST(req) {
         }
 
         // Forward the request to /api/transcriptToArticle with cookies
-        const response = await fetch('http://localhost:3000/api/transcriptToArticle', {
+        const response = await fetch('/api/transcriptToArticle', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
