@@ -5,10 +5,12 @@ export async function PUT(req) {
     try {
         // Connect to MongoDB if not already connected
         if (mongoose.connection.readyState !== 1) {
-            await mongoose.connect(process.env.MONGODB_URI, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-            });
+            await mongoose.connect(process.env.MONGODB_URI
+                // s, {
+                // suseNewUrlParser: true,
+                // suseUnifiedTopology: true,
+            // }s
+        );
         }
 
         const { articleId, email } = await req.json();
