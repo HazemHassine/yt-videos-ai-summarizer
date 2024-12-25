@@ -128,8 +128,16 @@
 //         );
 //     }
 // }
+// 92 998 584
+
+
+// Bouhjar kayenni machi lbannan. 9bal diverso 3l imin
+// Moknin 9bal stafe el hand. 3l imin
+
+
 import { DOMParser } from 'xmldom';
 import User from "../../models/User";
+import TempDoc from "../../models/TempDoc";
 import mongoose from 'mongoose';
 
 export async function POST(req) {
@@ -148,7 +156,23 @@ export async function POST(req) {
         }
 
         let youtubeText = await youtubeResponse.text();
+        console.log("****************************************************************************************")
         console.log("Fetched YouTube Page Text:", youtubeText); // Log the full page
+        console.log("****************************************************************************************")
+
+        // Connect to MongoDB if not already connected
+        if (mongoose.connection.readyState !== 1) {
+            console.log("MongoDB not connected, connecting...");
+            await mongoose.connect(process.env.MONGODB_URI);
+            console.log("MongoDB connected.");
+        } else {
+            console.log("MongoDB is already connected.");
+        }
+        // Save the fetched YouTube page text to a temporary document in MongoDB
+        console.log("Saving fetched YouTube page text to TempDoc...");
+        const tempDoc = new TempDoc({ content: youtubeText });
+        await tempDoc.save();
+        console.log("YouTube page text saved to TempDoc with ID:", tempDoc._id);
 
         youtubeText = youtubeText.replace(/\\u0026/g, '&'); // Clean any escaped characters
 
@@ -229,15 +253,6 @@ export async function POST(req) {
 
         const articleId = new mongoose.Types.ObjectId(); // Generate a Mongoose ObjectId
         const createdAtDate = new Date();
-
-        // Connect to MongoDB if not already connected
-        if (mongoose.connection.readyState !== 1) {
-            console.log("MongoDB not connected, connecting...");
-            await mongoose.connect(process.env.MONGODB_URI);
-            console.log("MongoDB connected.");
-        } else {
-            console.log("MongoDB is already connected.");
-        }
 
         // Find user by email and save the article
         console.log("Looking up user by email:", email);
